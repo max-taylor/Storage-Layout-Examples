@@ -4,7 +4,8 @@ pragma solidity ^0.8.13;
 import "forge-std/console.sol";
 
 contract StorageLayout {
-    // Slot 0
+    //  *** Reading from slot 0, single slot
+
     uint256 public slot0 = 100;
 
     function readSlot0() external returns (uint256) {
@@ -17,7 +18,8 @@ contract StorageLayout {
         return slot0Value;
     }
 
-    // Slot 1
+    //  *** Reading from slot 1, shared slot
+
     uint128 public slot1_0 = 200;
     uint128 public slot1_1 = 250;
 
@@ -44,12 +46,13 @@ contract StorageLayout {
         return (firstValue, secondValue);
     }
 
-    // Dynamic Length
+    // **** Dynamic Length
 
     // Bytes and strings can be treated identically to arrays, they are basically the same anyway
+
     uint256[] public variableArray = [100, 200, 300, 400, 500];
 
-    // New variable defined here is simply given the slot after where the length of the variableArray is stored
+    // New variables after here are assigned the slot after where the variableArray.length is stored
 
     function getArray() external returns (uint256[] memory) {
         return variableArray;
@@ -89,6 +92,8 @@ contract StorageLayout {
         }
     }
 
+    // **** Mappings
+
     mapping(uint256 => uint256) public testMapping;
 
     function setupMapping(uint256 numItems) external {
@@ -115,6 +120,8 @@ contract StorageLayout {
 
         console.log("Item: ", item);
     }
+
+    // **** Structs
 
     struct ExampleStruct {
         uint256 item0;
